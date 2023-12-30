@@ -1,23 +1,42 @@
-import React, { Fragment, useState } from 'react'
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider  } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import "./App.css"
 import Menu from "./components/Menu"
 import Todo from './components/Todo'
-import Game from "./components/Game"
+import Games from "./components/game/Games"
+import AllWords from './components/game/AllWords'
+import TenWords from './components/game/TenWords'
+import TwentyWords from './components/game/TwentyWords'
 
 function App() {
-  const routes = createBrowserRouter(
-    createRoutesFromElements(
-      <Route>
-        <Route path='/' element={<Menu/>}/>
-        <Route path='todo' element={<Todo/>}/>
-        <Route path='game' element={<Game/>}/>
-      </Route>
-    )
-  )
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Menu />,
+    },
+    {
+      path: "todo",
+      element: <Todo />
+    },
+    {
+      path: "game",
+      element: <Games />
+    },
+    {
+      path: "allWords",
+      element: <AllWords />
+    },
+    {
+      path: "tenWords",
+      element: <TenWords />
+    },
+    {
+      path: "twentyWords",
+      element: <TwentyWords />
+    },
+  ])
   return (
     <>
-      <RouterProvider router={routes}/>
+      <RouterProvider router={router} />
     </>
   )
 }
