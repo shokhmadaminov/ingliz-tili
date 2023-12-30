@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
+import { BiSolidExit } from "react-icons/bi";
+import { IoReload } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 // LocalStorage get words
 const memorized = JSON.parse(localStorage.getItem("memorized"))
@@ -22,27 +25,62 @@ function AllWords() {
   const newMemorized = arr.filter(w => {
     return arr[next].id !== w.id
   })
-  console.log(newMemorized);
   const answers = []
   for (let i = 0; i < 3; i++) {
     answers.splice((answers.length + 1) * Math.random() | 0, 0, newMemorized[i].uzb)
   }
   answers.splice((answers.length + 1) * Math.random() | 0, 0, arr[next].uzb)
 
-  function checkBtn(answer) {
-    if(answer === arr[next].uzb) {
+  function checkBtn(answer, e) {
+    if (answer === arr[next].uzb) {
+      e.target.classList.add('btn-success')
       score++
-    }
-    if(next < memorized.length - 1) {
-      setNext(next + 1)
     } else {
-      setGameOver(true)
+      e.target.classList.add('btn-error')
+    }
+    if (next < memorized.length - 1) {
+      setTimeout(() => {
+        e.target.classList.remove('btn-success')
+        e.target.classList.remove('btn-error')
+        setNext(next + 1)
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        setGameOver(true)
+      }, 1000);
     }
   }
 
-  if(gameOver) {
+  if (gameOver) {
     return (
-      <div>Assasfsadfsddfas</div>
+      <div className="flex flex-col items-center justify-center container px-4 h-[100%]">
+        <h1 className="text-3xl font-bold text-center mb-4">
+          O'yin tugadi
+        </h1>
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Sizga berilgan {memorized.length} ta so'zdan {score} tasini toptingiz.
+        </h1>
+        <div className="flex gap-4">
+          <Link to="/" className="btn btn-primary text-lg">
+            <BiSolidExit className="rotate-180 text-xl" />
+            chiqish
+          </Link>
+          <button onClick={()=> location.reload()} className="btn btn-active btn-accent text-lg">
+            <IoReload className="text-xl" />
+            yana
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (memorized.length < 5) {
+    return (
+      <div className="flex flex-col items-center justify-center container px-4 h-[100%]">
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Kechirasiz siz bu o'yindan foydalanishingiz uchun kamida 5 ta so'zdan iborat yodlangan so'zlar ro'yhati bo'lishi kerak. Hozirda sizda yodlangan so'zlar miqdori {memorized.length} ta
+        </h1>
+      </div>
     )
   }
 
@@ -55,7 +93,7 @@ function AllWords() {
 
       <div className="grid grid-cols-2 gap-2 mb-8 w-full">
         {answers.map((answer, i) => {
-          return <button onClick={() => checkBtn(answer)} className="btn btn-outline text-3xl" key={i}>{answer}</button>
+          return <button onClick={(e) => checkBtn(answer, e)} className="btn  text-3xl" key={i}>{answer}</button>
         })}
       </div>
 
