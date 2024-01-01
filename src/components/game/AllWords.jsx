@@ -4,7 +4,7 @@ import { IoReload } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 // LocalStorage get words
-const memorized = JSON.parse(localStorage.getItem("memorized"))
+const memorized = JSON.parse(localStorage.getItem("memorized")) ?JSON.parse(localStorage.getItem("memorized")) : []
 
 // new array for random words
 const arr = []
@@ -15,6 +15,7 @@ for (let i = 0; i < memorized.length; i++) {
 // user score
 let score = 0
 
+// start allwords component
 function AllWords() {
   const [next, setNext] = useState(0)
   const [gameOver, setGameOver] = useState(false)
@@ -26,10 +27,12 @@ function AllWords() {
     return arr[next].id !== w.id
   })
   const answers = []
-  for (let i = 0; i < 3; i++) {
-    answers.splice((answers.length + 1) * Math.random() | 0, 0, newMemorized[i].uzb)
+  if(arr.length) {
+    for (let i = 0; i < 3; i++) {
+      answers.splice((answers.length + 1) * Math.random() | 0, 0, newMemorized[i].uzb)
+    }
+    answers.splice((answers.length + 1) * Math.random() | 0, 0, arr[next].uzb)
   }
-  answers.splice((answers.length + 1) * Math.random() | 0, 0, arr[next].uzb)
 
   function checkBtn(answer, e) {
     if (answer === arr[next].uzb) {
