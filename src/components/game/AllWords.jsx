@@ -27,7 +27,7 @@ function AllWords() {
     return arr[next].id !== w.id
   })
   const answers = []
-  if(arr.length) {
+  if(arr.length > 5) {
     for (let i = 0; i < 3; i++) {
       answers.splice((answers.length + 1) * Math.random() | 0, 0, newMemorized[i].uzb)
     }
